@@ -155,10 +155,10 @@ const loginAdmin = async (req: Request, res: Response): Promise<any> => {
 };
 
 const registerUser = async (req: Request, res: Response): Promise<any> => {
-    const { email, password,address, mobile }: RegisterUser = req.body;
+    const { email, password,address, mobile, fname, lname }: RegisterUser = req.body;
     try {
 
-        if(!email || !password || !address || !mobile) {
+        if(!email || !password || !address || !mobile || !fname || !lname) {
             logger.error('Student registration failed. Please provide related fields.');
             return res.status(HttpStatus.BAD_REQUEST).json(
                 new ErrorResponse(
@@ -186,8 +186,8 @@ const registerUser = async (req: Request, res: Response): Promise<any> => {
         }
 
         const newUser = await db.query(
-            'INSERT INTO student (email, password, address, mobile , role) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-            [email, password, address, mobile, 'user']
+            'INSERT INTO student (email, password, address, mobile , role, fname, lname) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
+            [email, password, address, mobile, 'user', fname, lname]
         );
         logger.info("Register student query was successful");
 
@@ -204,7 +204,7 @@ const registerUser = async (req: Request, res: Response): Promise<any> => {
             new ErrorResponse(
                 HttpStatus.INTERNAL_SERVER_ERROR,
                 'Student register query internal server error',
-                'Student registration failed'
+                error.message
             )
         );
     }

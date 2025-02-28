@@ -3,4 +3,6 @@ export interface RegisterUser {
     password: string,
     address: string,
     mobile: string,
+    fname: string,
+    lname: string,
 }
