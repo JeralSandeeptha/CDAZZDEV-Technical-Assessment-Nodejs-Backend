@@ -10,6 +10,7 @@ import './config/db/db';
 import authRoutes from './routes/auth.routes';
 import studentRoutes from './routes/student.routes';
 import courseRoutes from './routes/course.routes';
+import enrollmentRouets from './routes/enrollment.routes';
 
 dotenv.config();
 
@@ -30,6 +31,7 @@ app.use(express.json());
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/student', studentRoutes);
 app.use('/api/v1/course', courseRoutes);
+app.use('/api/v1/enrollment', enrollmentRouets);
 
 const server = http.createServer(app);
 
