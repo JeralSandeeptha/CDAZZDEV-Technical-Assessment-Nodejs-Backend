@@ -1,4 +1,4 @@
-import { verifyAdmin, verifyToken } from 'api/middlewares/userAuthenticator';
+import { verifyAdmin, verifyToken } from '../middlewares/userAuthenticator';
 import { createCourse, deleteCourse, getAllCourses, getCourse, updateCourse } from '../controllers/course.controller';
 import express from 'express';
 

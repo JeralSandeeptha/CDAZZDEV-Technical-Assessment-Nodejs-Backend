@@ -282,10 +282,69 @@ const updateEnrollment = async (req: Request, res: Response): Promise<any> => {
     }
 }
 
+const getEnrollmentsBtStudentId = async (req: Request, res: Response): Promise<any> => {
+    try {
+        const { studentId } = req.params;
+
+        if(!studentId) {
+            logger.error('Student Id not found');
+            return res.status(HttpStatus.NOT_FOUND).json(
+                new ErrorResponse(
+                    HttpStatus.NOT_FOUND,
+                    'Get enrollments by student Id query was failed',
+                    'Student Id not found'
+                )
+            )
+        }
+
+        const dbQueryCheck = await db.query(
+            `SELECT 
+                e.id,
+                e.enrollment_date,
+                e.status,
+                s.id,
+                s.fname,
+                s.lname,
+                s.email,
+                s.mobile,
+                c.id,
+                c.title,
+                c.description,
+                c.instructor,
+                c.start_date,
+                c.end_date
+            FROM enrollment e
+            JOIN student s ON e.student_id = s.id
+            JOIN course c ON e.course_id = c.id
+            WHERE e.student_id = $1`,
+            [studentId]
+        );
+
+        logger.info('Get enrollments by studentId query was successful');
+        return res.status(HttpStatus.OK).json(
+            new SuccessResponse(
+                HttpStatus.OK,
+                'Get enrollments by student Id query was successful',
+                dbQueryCheck.rows
+            )
+        )
+    } catch (error) {
+        logger.error(error.message);
+        return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
+            new ErrorResponse(
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                'Get enrollments by student Id internal server error',
+                error.message
+            )
+        )
+    }
+}
+
 export {
     getEnrollment,
     getEnrollments,
     deleteEnrollment,
     updateEnrollment,
-    createEnrollment
+    createEnrollment,
+    getEnrollmentsBtStudentId
 };
