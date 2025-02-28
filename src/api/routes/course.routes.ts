@@ -1,12 +1,13 @@
+import { verifyAdmin, verifyToken } from 'api/middlewares/userAuthenticator';
 import { createCourse, deleteCourse, getAllCourses, getCourse, updateCourse } from '../controllers/course.controller';
 import express from 'express';
 
 const router = express.Router();
 
-router.post('/', createCourse);
-router.get('/', getAllCourses);
-router.get('/:courseId', getCourse);
-router.delete('/:courseId', deleteCourse);
-router.put('/:courseId', updateCourse);
+router.post('/', verifyToken, createCourse);
+router.get('/', verifyToken, getAllCourses);
+router.get('/:courseId', verifyToken, getCourse);
+router.delete('/:courseId', verifyAdmin, deleteCourse);
+router.put('/:courseId', verifyAdmin, updateCourse);
 
 export default router;
