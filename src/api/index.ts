@@ -9,6 +9,7 @@ import logger from './config/logger/logger';
 import './config/db/db';
 import authRoutes from './routes/auth.routes';
 import studentRoutes from './routes/student.routes';
+import courseRoutes from './routes/course.routes';
 
 dotenv.config();
 
@@ -28,6 +29,7 @@ app.use(express.json());
 
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/student', studentRoutes);
+app.use('/api/v1/course', courseRoutes);
 
 const server = http.createServer(app);
 
